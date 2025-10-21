@@ -252,18 +252,6 @@ export default function DashboardPage() {
 
   return (
     <div className="min-h-screen bg-gray-50 relative">
-      {/* Traditional Background Pattern */}
-      <div className="fixed inset-0 opacity-3 pointer-events-none">
-        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
-          <defs>
-            <pattern id="dashboardPattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
-              <path d="M50 20 L60 30 L70 20 L80 30 L90 20 L80 10 L70 20 L60 10 L50 20 Z M10 40 L20 50 L30 40 L40 50 L50 40 L40 30 L30 40 L20 30 L10 40 Z M70 60 L80 70 L90 60 L80 50 L70 60 Z M30 80 L40 90 L50 80 L40 70 L30 80 Z" fill="#F59E0B"/>
-            </pattern>
-          </defs>
-          <rect width="100%" height="100%" fill="url(#dashboardPattern)"/>
-        </svg>
-      </div>
-
       {/* Dashboard Content */}
       <div className="relative z-10">
       {/* Amazon-like Header */}
