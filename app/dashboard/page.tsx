@@ -26,6 +26,7 @@ import {
   ArrowRight,
   ShoppingBag,
   Sparkles,
+  Menu,
 } from 'lucide-react';
 import ChatBox from '@/components/ChatBox';
 import { PROCESS_STAGES, shouldShowPhotos } from '@/lib/constants';
@@ -41,6 +42,7 @@ export default function DashboardPage() {
   const [copied, setCopied] = useState<string | null>(null);
   const [searchQuery, setSearchQuery] = useState('');
   const [filterStatus, setFilterStatus] = useState<string>('all');
+  const [isMenuOpen, setIsMenuOpen] = useState(false);
   const router = useRouter();
 
   useEffect(() => {
@@ -167,27 +169,66 @@ export default function DashboardPage() {
     return (
       <div className="min-h-screen bg-gray-50">
         {/* Header */}
-        <div className="bg-gray-900 text-white py-4">
-          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 flex items-center justify-between">
-            <h1 className="text-2xl font-bold">Supreme Temple Jewellery</h1>
-            <div className="flex items-center space-x-4">
-              <a
-                href="https://supremetemplejewellery.in"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded font-semibold text-sm transition-all shadow-md hover:shadow-lg"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Buy More</span>
-                <Sparkles className="w-3 h-3" />
-              </a>
-              <button onClick={handleLogout} className="flex items-center space-x-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded">
-                <LogOut className="w-4 h-4" />
-                <span>Logout</span>
-              </button>
+        <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
+          <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+            <div className="flex items-center justify-between h-16">
+              <div className="flex items-center space-x-4">
+                <button
+                  onClick={() => setIsMenuOpen(!isMenuOpen)}
+                  className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
+                >
+                  <Menu className="w-6 h-6" />
+                </button>
+                <h1 className="text-2xl font-bold text-gray-900 tracking-tight">SUPREME TRACKER</h1>
+              </div>
+              <div className="flex items-center space-x-2">
+                <ShoppingBag className="w-5 h-5 text-gray-600" />
+              </div>
             </div>
           </div>
         </div>
+
+        {/* Hamburger Menu Dropdown for empty state */}
+        {isMenuOpen && (
+          <div className="fixed inset-0 z-50" onClick={() => setIsMenuOpen(false)}>
+            <div className="fixed top-0 left-0 w-80 h-full bg-white shadow-xl" onClick={(e) => e.stopPropagation()}>
+              <div className="p-6">
+                <div className="flex items-center space-x-3 pb-6 border-b border-gray-200">
+                  <div className="w-12 h-12 bg-[#FF9900] rounded-full flex items-center justify-center">
+                    <User className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">{user?.name}</p>
+                    <p className="text-sm text-gray-600">View profile</p>
+                  </div>
+                </div>
+                <div className="py-6 space-y-2">
+                  <a
+                    href="https://supremetemplejewellery.in"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <ShoppingBag className="w-5 h-5" />
+                    <span className="font-medium">Shop More</span>
+                    <Sparkles className="w-4 h-4 ml-auto" />
+                  </a>
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors w-full text-left"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span className="font-medium">Logout</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
         {/* Empty State */}
         <div className="max-w-4xl mx-auto px-4 py-16 text-center">
@@ -210,50 +251,99 @@ export default function DashboardPage() {
   }
 
   return (
-    <div className="min-h-screen bg-gray-50">
+    <div className="min-h-screen bg-gray-50 relative">
+      {/* Traditional Background Pattern */}
+      <div className="fixed inset-0 opacity-3 pointer-events-none">
+        <svg width="100%" height="100%" xmlns="http://www.w3.org/2000/svg">
+          <defs>
+            <pattern id="dashboardPattern" x="0" y="0" width="100" height="100" patternUnits="userSpaceOnUse">
+              <path d="M50 20 L60 30 L70 20 L80 30 L90 20 L80 10 L70 20 L60 10 L50 20 Z M10 40 L20 50 L30 40 L40 50 L50 40 L40 30 L30 40 L20 30 L10 40 Z M70 60 L80 70 L90 60 L80 50 L70 60 Z M30 80 L40 90 L50 80 L40 70 L30 80 Z" fill="#F59E0B"/>
+            </pattern>
+          </defs>
+          <rect width="100%" height="100%" fill="url(#dashboardPattern)"/>
+        </svg>
+      </div>
+
+      {/* Dashboard Content */}
+      <div className="relative z-10">
       {/* Amazon-like Header */}
-      <div className="bg-gray-900 text-white">
+      <div className="bg-white border-b border-gray-200 sticky top-0 z-40">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
           <div className="flex items-center justify-between h-16">
-            <div className="flex items-center space-x-8">
-              <h1 className="text-2xl font-bold">Supreme Temple Jewellery</h1>
+            {/* Left side - Logo and hamburger */}
+            <div className="flex items-center space-x-4">
+              <button
+                onClick={() => setIsMenuOpen(!isMenuOpen)}
+                className="p-2 rounded-md text-gray-600 hover:text-gray-900 hover:bg-gray-100 focus:outline-none focus:ring-2 focus:ring-orange-500"
+              >
+                <Menu className="w-6 h-6" />
+              </button>
+              <h1 className="text-2xl font-bold text-gray-900 tracking-tight">SUPREME TRACKER</h1>
               <nav className="hidden md:flex items-center space-x-6 text-sm">
-                <span className="font-semibold border-b-2 border-orange-500 pb-1">Your Orders</span>
+                <span className="font-semibold text-orange-600 border-b-2 border-orange-500 pb-1">Your Orders</span>
               </nav>
             </div>
-            <div className="flex items-center space-x-4">
-              <div className="flex items-center space-x-2 text-sm">
-                <User className="w-4 h-4" />
-                <span>Hello, {user?.name}</span>
-              </div>
-              <a
-                href="https://supremetemplejewellery.in"
-                target="_blank"
-                rel="noopener noreferrer"
-                className="flex items-center space-x-2 px-4 py-2 bg-gradient-to-r from-orange-500 to-orange-600 hover:from-orange-600 hover:to-orange-700 text-white rounded font-semibold text-sm transition-all shadow-md hover:shadow-lg"
-              >
-                <ShoppingBag className="w-4 h-4" />
-                <span>Buy More</span>
-                <Sparkles className="w-3 h-3" />
-              </a>
-              <button
-                onClick={handleLogout}
-                className="flex items-center space-x-2 px-4 py-2 bg-gray-800 hover:bg-gray-700 rounded text-sm transition-colors"
-              >
-                <LogOut className="w-4 h-4" />
-                <span>Logout</span>
-              </button>
+
+            {/* Right side - Cart icon placeholder for future use */}
+            <div className="flex items-center space-x-2">
+              <ShoppingBag className="w-5 h-5 text-gray-600" />
             </div>
           </div>
         </div>
       </div>
+
+        {/* Hamburger Menu Dropdown */}
+        {isMenuOpen && (
+          <div className="fixed inset-0 z-50" onClick={() => setIsMenuOpen(false)}>
+            <div className="fixed top-0 left-0 w-80 h-full bg-white shadow-xl" onClick={(e) => e.stopPropagation()}>
+              <div className="p-6">
+                {/* User Info Header */}
+                <div className="flex items-center space-x-3 pb-6 border-b border-gray-200">
+                  <div className="w-12 h-12 bg-[#FF9900] rounded-full flex items-center justify-center">
+                    <User className="w-6 h-6 text-white" />
+                  </div>
+                  <div>
+                    <p className="font-semibold text-gray-900">{user?.name}</p>
+                    <p className="text-sm text-gray-600">View profile</p>
+                  </div>
+                </div>
+
+                {/* Menu Items */}
+                <div className="py-6 space-y-2">
+                  <a
+                    href="https://supremetemplejewellery.in"
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-orange-50 hover:text-orange-600 rounded-lg transition-colors"
+                    onClick={() => setIsMenuOpen(false)}
+                  >
+                    <ShoppingBag className="w-5 h-5" />
+                    <span className="font-medium">Shop More</span>
+                    <Sparkles className="w-4 h-4 ml-auto" />
+                  </a>
+
+                  <button
+                    onClick={() => {
+                      handleLogout();
+                      setIsMenuOpen(false);
+                    }}
+                    className="flex items-center space-x-3 px-4 py-3 text-gray-700 hover:bg-red-50 hover:text-red-600 rounded-lg transition-colors w-full text-left"
+                  >
+                    <LogOut className="w-5 h-5" />
+                    <span className="font-medium">Logout</span>
+                  </button>
+                </div>
+              </div>
+            </div>
+          </div>
+        )}
 
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Welcome Banner */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
-          className="bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden"
+          className="bg-gradient-to-r from-[#FF9900] via-[#FF9900] to-[#E47911] rounded-2xl p-8 mb-8 text-white shadow-xl relative overflow-hidden"
         >
           <div className="absolute top-0 right-0 w-64 h-64 bg-white opacity-5 rounded-full -mr-32 -mt-32"></div>
           <div className="absolute bottom-0 left-0 w-48 h-48 bg-white opacity-5 rounded-full -ml-24 -mb-24"></div>
@@ -283,7 +373,7 @@ export default function DashboardPage() {
                 <p className="text-sm font-semibold text-gray-600 uppercase mb-1">Total Orders</p>
                 <p className="text-4xl font-bold text-gray-900">{orders.length}</p>
               </div>
-              <div className="w-16 h-16 bg-gradient-to-br from-blue-500 to-blue-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#FF9900] to-[#E47911] rounded-2xl flex items-center justify-center shadow-lg">
                 <Package className="w-8 h-8 text-white" />
               </div>
             </div>
@@ -293,14 +383,14 @@ export default function DashboardPage() {
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.2 }}
-            className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-orange-500 hover:shadow-xl transition-all"
+            className="bg-white rounded-xl p-6 shadow-lg border-l-4 border-[#FF9900] hover:shadow-xl transition-all"
           >
             <div className="flex items-center justify-between">
               <div>
                 <p className="text-sm font-semibold text-gray-600 uppercase mb-1">In Progress</p>
                 <p className="text-4xl font-bold text-gray-900">{orders.filter(o => o.status === 'active').length}</p>
               </div>
-              <div className="w-16 h-16 bg-gradient-to-br from-orange-500 to-orange-600 rounded-2xl flex items-center justify-center shadow-lg">
+              <div className="w-16 h-16 bg-gradient-to-br from-[#FF9900] to-[#E47911] rounded-2xl flex items-center justify-center shadow-lg">
                 <Clock className="w-8 h-8 text-white" />
               </div>
             </div>
@@ -427,7 +517,7 @@ export default function DashboardPage() {
                     <div className="flex-1">
                       <h3 className="text-2xl font-bold text-gray-900 mb-2">{order.product_name}</h3>
                       <div className="flex items-center space-x-4 text-sm mb-3">
-                        <span className="flex items-center px-3 py-1 bg-orange-100 text-orange-700 rounded-full font-semibold">
+                        <span className="flex items-center px-3 py-1 bg-[#FF9900] text-white rounded-full font-semibold">
                           <MapPin className="w-4 h-4 mr-1" />
                           Stage {order.current_stage} of 5
                         </span>
@@ -440,13 +530,13 @@ export default function DashboardPage() {
                       <div className="mb-4">
                         <div className="flex items-center justify-between mb-3">
                           <span className="text-sm font-bold text-gray-700">Production Progress</span>
-                          <span className="text-lg font-bold text-orange-600">
+                          <span className="text-lg font-bold text-[#FF9900]">
                             {Math.round(getProgressPercentage(order.current_stage))}%
                           </span>
                         </div>
                         <div className="relative w-full bg-gray-200 rounded-full h-4 shadow-inner">
                           <div
-                            className="absolute top-0 left-0 h-4 bg-gradient-to-r from-orange-500 via-orange-600 to-red-600 rounded-full transition-all duration-500 shadow-lg"
+                            className="absolute top-0 left-0 h-4 bg-gradient-to-r from-[#FF9900] via-[#FF9900] to-[#E47911] rounded-full transition-all duration-500 shadow-lg"
                             style={{ width: `${getProgressPercentage(order.current_stage)}%` }}
                           >
                             <div className="absolute right-0 top-1/2 transform -translate-y-1/2 w-3 h-3 bg-white rounded-full shadow-md"></div>
@@ -534,7 +624,7 @@ export default function DashboardPage() {
                       <div className="flex flex-wrap gap-3">
                         <button
                           onClick={() => setSelectedOrder(selectedOrder?.id === order.id ? null : order)}
-                          className="px-4 py-2 bg-orange-500 hover:bg-orange-600 text-white rounded font-medium text-sm transition-colors"
+                          className="px-4 py-2 bg-[#FF9900] hover:bg-[#E47911] text-white rounded font-medium text-sm transition-colors"
                         >
                           {selectedOrder?.id === order.id ? 'Hide Details' : 'View Production Stages'}
                         </button>
@@ -577,7 +667,7 @@ export default function DashboardPage() {
                               <div className="flex flex-col items-center mr-4">
                                 <div className={`w-8 h-8 rounded-full flex items-center justify-center ${
                                   isCompleted ? 'bg-green-500' :
-                                  isCurrent ? 'bg-orange-500' :
+                                  isCurrent ? 'bg-[#FF9900]' :
                                   'bg-gray-300'
                                 }`}>
                                   {isCompleted ? (
@@ -596,7 +686,7 @@ export default function DashboardPage() {
                               {/* Stage Content */}
                               <div className="flex-1 pb-8">
                                 <div className={`p-4 rounded-lg border ${
-                                  isCurrent ? 'bg-orange-50 border-orange-200' :
+                                  isCurrent ? 'bg-[#FFF5E6] border-[#FF9900]' :
                                   isCompleted ? 'bg-green-50 border-green-200' :
                                   'bg-gray-50 border-gray-200'
                                 }`}>
@@ -606,7 +696,7 @@ export default function DashboardPage() {
                                       <p className="text-sm text-gray-600 mt-1">{stage.description}</p>
                                     </div>
                                     {isCurrent && (
-                                      <span className="px-2 py-1 bg-orange-500 text-white text-xs font-semibold rounded">
+                                      <span className="px-2 py-1 bg-[#FF9900] text-white text-xs font-semibold rounded">
                                         Current
                                       </span>
                                     )}
@@ -704,7 +794,8 @@ export default function DashboardPage() {
       </div>
 
       {/* Chat Box */}
-      {adminId && selectedOrder && <ChatBox orderId={selectedOrder.id} adminId={adminId} />}
+      {adminId && <ChatBox orderId={selectedOrder?.id || ''} adminId={adminId} />}
+      </div>
     </div>
   );
 }
