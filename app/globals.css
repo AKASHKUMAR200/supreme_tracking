@@ -1,0 +1,84 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@layer base {
+  body {
+    @apply bg-gradient-to-br from-temple-cream via-white to-gold-50 min-h-screen;
+  }
+}
+
+@layer components {
+  .temple-card {
+    @apply bg-white rounded-2xl shadow-lg border border-gold-200 p-6 transition-all hover:shadow-xl;
+  }
+
+  .temple-button {
+    @apply bg-gradient-to-r from-temple-gold to-temple-darkGold text-white px-6 py-3 rounded-lg font-semibold shadow-md hover:shadow-lg transition-all duration-300 hover:scale-105;
+  }
+
+  .temple-button-secondary {
+    @apply bg-white text-temple-gold border-2 border-temple-gold px-6 py-3 rounded-lg font-semibold hover:bg-temple-gold hover:text-white transition-all duration-300;
+  }
+
+  .temple-input {
+    @apply w-full px-4 py-3 border-2 border-gold-300 rounded-lg focus:border-temple-gold focus:outline-none focus:ring-2 focus:ring-temple-gold/20 transition-all;
+  }
+
+  .stage-badge-pending {
+    @apply bg-gray-200 text-gray-600;
+  }
+
+  .stage-badge-in-progress {
+    @apply bg-blue-100 text-blue-700 animate-pulse;
+  }
+
+  .stage-badge-completed {
+    @apply bg-green-100 text-green-700;
+  }
+
+  .chat-bubble-user {
+    @apply bg-temple-gold text-white rounded-2xl rounded-br-sm px-4 py-2 max-w-xs ml-auto;
+  }
+
+  .chat-bubble-admin {
+    @apply bg-gray-100 text-gray-800 rounded-2xl rounded-bl-sm px-4 py-2 max-w-xs;
+  }
+}
+
+/* Custom scrollbar */
+::-webkit-scrollbar {
+  width: 8px;
+  height: 8px;
+}
+
+::-webkit-scrollbar-track {
+  background: #f1f1f1;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb {
+  background: #D4AF37;
+  border-radius: 10px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+  background: #B8860B;
+}
+
+/* Dark mode styles */
+.dark body {
+  @apply bg-gradient-to-br from-gray-900 via-gray-800 to-gray-900;
+}
+
+.dark .temple-card {
+  @apply bg-gray-800 border-gray-700;
+}
+
+.dark .temple-input {
+  @apply bg-gray-700 border-gray-600 text-white;
+}
+
+.dark .chat-bubble-admin {
+  @apply bg-gray-700 text-white;
+}
