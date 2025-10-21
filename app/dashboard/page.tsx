@@ -28,7 +28,7 @@ import {
   Sparkles,
 } from 'lucide-react';
 import ChatBox from '@/components/ChatBox';
-import { PROCESS_STAGES } from '@/lib/constants';
+import { PROCESS_STAGES, shouldShowPhotos } from '@/lib/constants';
 
 export default function DashboardPage() {
   const [user, setUser] = useState<any>(null);
@@ -504,12 +504,12 @@ export default function DashboardPage() {
                       )}
 
                       {/* Photo Gallery Preview */}
-                      {orderProcessUpdates.filter(u => u.photo_url).length > 0 && (
+                      {orderProcessUpdates.filter(u => u.photo_url && shouldShowPhotos(u.stage_number, order.current_stage, orderProcessUpdates)).length > 0 && (
                         <div className="mb-4">
-                          <p className="text-sm font-medium text-gray-700 mb-2">Production Photos ({orderProcessUpdates.filter(u => u.photo_url).length})</p>
+                          <p className="text-sm font-medium text-gray-700 mb-2">Production Photos ({orderProcessUpdates.filter(u => u.photo_url && shouldShowPhotos(u.stage_number, order.current_stage, orderProcessUpdates)).length})</p>
                           <div className="flex gap-2 overflow-x-auto pb-2">
                             {orderProcessUpdates
-                              .filter(u => u.photo_url)
+                              .filter(u => u.photo_url && shouldShowPhotos(u.stage_number, order.current_stage, orderProcessUpdates))
                               .slice(0, 4)
                               .map((update, idx) => (
                                 <div key={idx} className="flex-shrink-0">
@@ -521,9 +521,9 @@ export default function DashboardPage() {
                                   />
                                 </div>
                               ))}
-                            {orderProcessUpdates.filter(u => u.photo_url).length > 4 && (
+                            {orderProcessUpdates.filter(u => u.photo_url && shouldShowPhotos(u.stage_number, order.current_stage, orderProcessUpdates)).length > 4 && (
                               <div className="w-20 h-20 bg-gray-100 rounded border-2 border-gray-300 flex items-center justify-center text-gray-600 text-sm font-semibold">
-                                +{orderProcessUpdates.filter(u => u.photo_url).length - 4}
+                                +{orderProcessUpdates.filter(u => u.photo_url && shouldShowPhotos(u.stage_number, order.current_stage, orderProcessUpdates)).length - 4}
                               </div>
                             )}
                           </div>
@@ -618,7 +618,7 @@ export default function DashboardPage() {
                                   </div>
 
                                   {/* Stage Photo */}
-                                  {stageUpdate?.photo_url && (
+                                  {stageUpdate?.photo_url && shouldShowPhotos(stage.id, order.current_stage, orderProcessUpdates) && (
                                     <div className="mt-4">
                                       <p className="text-xs font-semibold text-gray-600 uppercase mb-2">Stage Photo</p>
                                       <div className="relative group">

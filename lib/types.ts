@@ -38,14 +38,15 @@ export type Bill = {
   created_at: string;
 };
 
-export type Message = {
+export type FileData = {
   id: string;
-  sender_id: string;
-  receiver_id: string;
-  message_text: string;
-  attachment_url: string | null;
-  timestamp: string;
-  read: boolean;
+  filename: string;
+  original_name: string;
+  mime_type: string;
+  size: number;
+  data: string;
+  type: 'process-photos' | 'bills' | 'attachments';
+  created_at: string;
 };
 
 // API Helper Functions

@@ -84,7 +84,7 @@ export default function OrderManagementPage() {
         if (processUpdate) {
           await api.put('/process-updates', {
             id: processUpdate.id,
-            photo_url: result.url,
+            photo_url: `/api/files?fileId=${result.fileId}`,
           });
         }
 
@@ -115,7 +115,7 @@ export default function OrderManagementPage() {
       if (result.success) {
         await api.post('/bills', {
           order_id: orderId,
-          bill_url: result.url,
+          bill_url: `/api/files?fileId=${result.fileId}`,
         });
         alert('Bill uploaded successfully!');
       }

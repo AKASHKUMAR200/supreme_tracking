@@ -121,7 +121,7 @@ export default function ChatBox({ orderId, adminId }: ChatBoxProps) {
           sender_id: currentUser.id,
           receiver_id: adminId,
           message_text: file.name,
-          attachment_url: result.url,
+          attachment_url: `/api/files?fileId=${result.fileId}`,
         });
         fetchMessages();
       }

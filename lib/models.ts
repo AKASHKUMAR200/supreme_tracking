@@ -111,9 +111,34 @@ const MessageSchema = new Schema<IMessage>({
 MessageSchema.index({ sender_id: 1, receiver_id: 1 });
 MessageSchema.index({ timestamp: -1 });
 
+// File Schema for storing files in MongoDB
+export interface IFile {
+  _id: string;
+  filename: string;
+  original_name: string;
+  mime_type: string;
+  size: number;
+  data: string; // base64 encoded file data
+  type: 'process-photos' | 'bills' | 'attachments';
+  created_at: Date;
+}
+
+const FileSchema = new Schema<IFile>({
+  filename: { type: String, required: true },
+  original_name: { type: String, required: true },
+  mime_type: { type: String, required: true },
+  size: { type: Number, required: true },
+  data: { type: String, required: true }, // base64 encoded
+  type: { type: String, enum: ['process-photos', 'bills', 'attachments'], required: true },
+  created_at: { type: Date, default: Date.now },
+});
+
+FileSchema.index({ type: 1, created_at: -1 });
+
 // Export Models
 export const User: Model<IUser> = mongoose.models.User || mongoose.model<IUser>('User', UserSchema);
 export const Order: Model<IOrder> = mongoose.models.Order || mongoose.model<IOrder>('Order', OrderSchema);
 export const ProcessUpdate: Model<IProcessUpdate> = mongoose.models.ProcessUpdate || mongoose.model<IProcessUpdate>('ProcessUpdate', ProcessUpdateSchema);
 export const Bill: Model<IBill> = mongoose.models.Bill || mongoose.model<IBill>('Bill', BillSchema);
 export const Message: Model<IMessage> = mongoose.models.Message || mongoose.model<IMessage>('Message', MessageSchema);
+export const File: Model<IFile> = mongoose.models.File || mongoose.model<IFile>('File', FileSchema);
